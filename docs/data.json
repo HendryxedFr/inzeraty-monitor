@@ -1,1 +1,254 @@
-[]
+[
+  {
+    "id": "c6dc5ca9-e93e-4a6b-aa2f-7e3498a80f07",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/obrazky/list.gif"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "2e9bb554-39ec-4023-9eb3-1f10ced88a55",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/014/204180014.jpg?t=1750526774"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "3e5762a3-769f-49da-9d78-6a75962913b5",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/535/204549535.jpg?t=1751288601"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "1f089d04-3073-41df-8896-df7ca46bd601",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/929/204546929.jpg?t=1751289660"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "b8bc4155-3cc3-41aa-9379-0266b9203415",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/788/204533788.jpg?t=1751266319"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "87aa1d7e-e9b3-4f9a-b7ef-7ad6d3f773e3",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/723/204533723.jpg?t=1751266285"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "2f1a5c34-74d2-44c4-bdf0-c1ff91faac5f",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/520/204392520.jpg?t=1750941652"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "4ec29a00-6b7c-46f9-9c5c-e64e3c92ed0c",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/816/204304816.jpg?t=1751287856"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "caf14767-b653-4789-81c8-cd56cbf8af64",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/656/204533656.jpg?t=1751266389"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "4bf0da36-085d-4f55-b1e9-165fa7ba6ba4",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/809/204533809.jpg?t=1751266347"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "36f33900-abc4-4a18-a9ec-11c7ac8088a9",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/509/204251509.jpg?t=1750671414"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "d30ab909-7976-4195-bd06-ed40cb0905dd",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/169/204428169.jpg?t=1751287899"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "a09b8589-33a0-44ab-a763-4b592b0d8f03",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/762/204550762.jpg?t=1751288166"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "2440598c-4644-4f6f-b7d8-6efecfa2e6c5",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/981/203495981.jpg?t=1750964713"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "389c5720-a56a-4913-a52c-4e549322853a",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/537/204484537.jpg?t=1751269475"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "16466821-0dae-4bba-8885-7564f6a7c130",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/965/204100965.jpg?t=1750532421"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "441f5b3e-c8a1-471a-955a-e18e88d3db9c",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/586/204307586.jpg?t=1750921369"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "59eb8a97-ff31-4a23-92b8-692d3e452e26",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/687/204502687.jpg?t=1751200658"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "996db2a6-3844-4db6-9743-49912fe1730d",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/666/204472666.jpg?t=1751124953"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "9c0fc734-f383-4d18-b3b3-0f1bb180f55f",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/255/204470255.jpg?t=1751119684"
+    ],
+    "url": "",
+    "source": "bazos"
+  },
+  {
+    "id": "c2c51b09-164c-473d-9497-cc29a835bb5c",
+    "title": "Bez názvu",
+    "price": "Neuvedeno",
+    "location": "Neznámá lokalita",
+    "description": "Bez popisu",
+    "images": [
+      "https:https://www.bazos.cz/img/1t/117/204470117.jpg?t=1751119661"
+    ],
+    "url": "",
+    "source": "bazos"
+  }
+]
