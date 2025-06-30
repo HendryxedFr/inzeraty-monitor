@@ -2,75 +2,97 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import uuid
-from pathlib import Path
-import re
-from datetime import datetime
+from datetime import datetime, timedelta
+import os
 
 headers = {"User-Agent": "Mozilla/5.0"}
 
+
+def parse_date_from_text(text):
+    """Try to extract date from text like [30.6. 2025]"""
+    import re
+    match = re.search(r'\[(\d{1,2})\.(\d{1,2})\.\s*(\d{4})\]', text)
+    if match:
+        day, month, year = map(int, match.groups())
+        return datetime(year, month, day)
+    return None
+
+
+def load_existing_ids(path):
+    if not os.path.exists(path):
+        return set()
+    with open(path, encoding="utf-8") as f:
+        try:
+            data = json.load(f)
+            return {ad["id"] for ad in data if "id" in ad}
+        except:
+            return set()
+
+
 def scrap_bazos():
     print("Scraping Bazos...")
-    url = "https://mobil.bazos.cz/"
-    r = requests.get(url, headers=headers)
-    soup = BeautifulSoup(r.text, "html.parser")
-
     ads = []
-    base_url = "https://mobil.bazos.cz"
+    today = datetime.today()
+    seven_days_ago = today - timedelta(days=7)
 
-    for item in soup.select("div.inzeraty.inzeratyflex"):
-        title_tag = item.select_one("h2.nadpis a")
-        title = title_tag.text.strip() if title_tag else "Bez názvu"
-        link = base_url + title_tag["href"] if title_tag else ""
+    for page in range(1, 20):  # načteme až 20 stránek
+        url = f"https://mobil.bazos.cz/{page}/"
+        r = requests.get(url, headers=headers)
+        soup = BeautifulSoup(r.text, "html.parser")
 
-        image_tag = item.select_one("div.inzeratynadpis img.obrazek")
-        image = ""
-        if image_tag:
-            src = image_tag.get("src", "")
-            if src.startswith("//"):
-                image = "https:" + src
-            else:
-                image = src
+        items = soup.select("div.inzeraty")
+        if not items:
+            break
 
-        popis_tag = item.select_one("div.inzeratynadpis div.popis")
-        description = popis_tag.text.strip() if popis_tag else "Bez popisu"
+        for item in items:
+            title_tag = item.select_one("h2.nadpis a")
+            title = title_tag.text.strip() if title_tag else "Bez názvu"
+            link = "https://bazos.cz" + title_tag["href"] if title_tag else ""
 
-        price_tag = item.select_one("div.inzeratycena b")
-        price = price_tag.text.strip().replace("Kč", "").strip() if price_tag else "Neuvedeno"
+            date_text = item.text
+            date = parse_date_from_text(date_text)
+            if date and date < seven_days_ago:
+                continue  # přeskoč inzerát starší než týden
 
-        location_tag = item.select_one("div.inzeratylok")
-        location = location_tag.get_text(separator=" ", strip=True) if location_tag else "Neznámá lokalita"
+            price_tag = item.select_one("div.inzeratycena b")
+            price = price_tag.text.strip() if price_tag else "Neuvedeno"
 
-        # Extrahuj datum přidání
-        date_added = None
-        date_span = item.select_one("span.velikost10")
-        if date_span:
-            date_text = date_span.text
-            date_match = re.search(r"\[(\d{1,2}\.\d{1,2}\.\s*\d{4})\]", date_text)
-            if date_match:
-                date_str = date_match.group(1).strip()
-                try:
-                    date_obj = datetime.strptime(date_str, "%d.%m. %Y").date()
-                    date_added = date_obj.isoformat()
-                except ValueError:
-                    date_added = None
+            location_tag = item.select_one("div.inzeratylok")
+            location = location_tag.get_text(" ", strip=True) if location_tag else "Neznámá lokalita"
 
-        ads.append({
-            "id": str(uuid.uuid4()),
-            "title": title,
-            "price": price,
-            "location": location,
-            "description": description,
-            "images": [image] if image else [],
-            "url": link,
-            "source": "bazos",
-            "date_added": date_added
-        })
+            desc_tag = item.select_one("div.popis")
+            desc = desc_tag.text.strip() if desc_tag else "Bez popisu"
 
-    print(f"✅ Uloženo {len(ads)} inzerátů z Bazoš")
+            img_tag = item.select_one("img")
+            image = "https:" + img_tag["src"] if img_tag and "src" in img_tag.attrs else ""
+
+            ad_id = link.split("/")[-1].replace(".php", "") if link else str(uuid.uuid4())
+
+            ads.append({
+                "id": ad_id,
+                "title": title,
+                "price": price,
+                "location": location,
+                "description": desc,
+                "images": [image] if image else [],
+                "url": link,
+                "source": "bazos",
+                "date": date.strftime("%Y-%m-%d") if date else ""
+            })
+
     return ads
 
+
 if __name__ == "__main__":
-    Path("docs").mkdir(parents=True, exist_ok=True)
-    ads = scrap_bazos()
-    with open("docs/data.json", "w", encoding="utf-8") as f:
-        json.dump(ads, f, ensure_ascii=False, indent=2)
+    OUTPUT_FILE = "docs/data.json"
+    existing_ids = load_existing_ids(OUTPUT_FILE)
+
+    new_ads = scrap_bazos()
+    filtered_ads = [ad for ad in new_ads if ad["id"] not in existing_ids]
+
+    all_ads = list(filtered_ads)
+
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        json.dump(all_ads, f, ensure_ascii=False, indent=2)
+
+    print(f"✅ Uloženo {len(all_ads)} inzerátů do {OUTPUT_FILE}")
