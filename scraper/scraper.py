@@ -3,119 +3,74 @@ from bs4 import BeautifulSoup
 import json
 import uuid
 from pathlib import Path
+import re
+from datetime import datetime
 
 headers = {"User-Agent": "Mozilla/5.0"}
 
 def scrap_bazos():
     print("Scraping Bazos...")
+    url = "https://mobil.bazos.cz/"
+    r = requests.get(url, headers=headers)
+    soup = BeautifulSoup(r.text, "html.parser")
+
     ads = []
-    try:
-        url = "https://mobil.bazos.cz/"
-        r = requests.get(url, headers=headers, timeout=10)
-        soup = BeautifulSoup(r.text, "html.parser")
+    base_url = "https://mobil.bazos.cz"
 
-        for item in soup.select("div.inzeratynadpis"):
-            title_tag = item.select_one("h2nadpis a")
-            title = title_tag.text.strip() if title_tag else "Bez názvu"
-            link = "https://bazos.cz" + title_tag["href"] if title_tag else ""
-            price_tag = item.select_one(".cena")
-            price = price_tag.text.strip() if price_tag else "Neuvedeno"
-            location_tag = item.select_one("p span.velikost")
-            location = location_tag.text.strip() if location_tag else "Neznámá lokalita"
-            desc = item.select("p")[1].text.strip() if len(item.select("p")) > 1 else "Bez popisu"
-            img_tag = item.select_one("img")
-            image = "https:" + img_tag["src"] if img_tag else ""
+    for item in soup.select("div.inzeraty.inzeratyflex"):
+        title_tag = item.select_one("h2.nadpis a")
+        title = title_tag.text.strip() if title_tag else "Bez názvu"
+        link = base_url + title_tag["href"] if title_tag else ""
 
-            ads.append({
-                "id": str(uuid.uuid4()),
-                "title": title,
-                "price": price,
-                "location": location,
-                "description": desc,
-                "images": [image] if image else [],
-                "url": link,
-                "source": "bazos"
-            })
-    except Exception as e:
-        print("❌ Bazos chyba:", e)
-    return ads
+        image_tag = item.select_one("div.inzeratynadpis img.obrazek")
+        image = ""
+        if image_tag:
+            src = image_tag.get("src", "")
+            if src.startswith("//"):
+                image = "https:" + src
+            else:
+                image = src
 
-def scrap_sbazar():
-    print("Scraping Sbazar...")
-    ads = []
-    try:
-        url = "https://www.sbazar.cz/30-elektro-pocitace"
-        r = requests.get(url, headers=headers, timeout=10)
-        soup = BeautifulSoup(r.text, "html.parser")
+        popis_tag = item.select_one("div.inzeratynadpis div.popis")
+        description = popis_tag.text.strip() if popis_tag else "Bez popisu"
 
-        for item in soup.select("article.ListItem"):
-            title_tag = item.select_one("h3")
-            title = title_tag.text.strip() if title_tag else "Bez názvu"
-            link_tag = item.select_one("a[href]")
-            link = "https://www.sbazar.cz" + link_tag["href"] if link_tag else ""
-            price_tag = item.select_one(".Price")
-            price = price_tag.text.strip() if price_tag else "Neuvedeno"
-            location_tag = item.select_one(".Locality")
-            location = location_tag.text.strip() if location_tag else "Neznámá lokalita"
-            desc_tag = item.select_one("p")
-            desc = desc_tag.text.strip() if desc_tag else "Bez popisu"
-            img_tag = item.select_one("img")
-            image = img_tag["src"] if img_tag else ""
+        price_tag = item.select_one("div.inzeratycena b")
+        price = price_tag.text.strip().replace("Kč", "").strip() if price_tag else "Neuvedeno"
 
-            ads.append({
-                "id": str(uuid.uuid4()),
-                "title": title,
-                "price": price,
-                "location": location,
-                "description": desc,
-                "images": [image] if image else [],
-                "url": link,
-                "source": "sbazar"
-            })
-    except Exception as e:
-        print("❌ Sbazar chyba:", e)
-    return ads
+        location_tag = item.select_one("div.inzeratylok")
+        location = location_tag.get_text(separator=" ", strip=True) if location_tag else "Neznámá lokalita"
 
-def scrap_aukro():
-    print("Scraping Aukro...")
-    ads = []
-    try:
-        url = "https://aukro.cz/mobily-a-gps"
-        r = requests.get(url, headers=headers, timeout=10)
-        soup = BeautifulSoup(r.text, "html.parser")
+        # Extrahuj datum přidání
+        date_added = None
+        date_span = item.select_one("span.velikost10")
+        if date_span:
+            date_text = date_span.text
+            date_match = re.search(r"\[(\d{1,2}\.\d{1,2}\.\s*\d{4})\]", date_text)
+            if date_match:
+                date_str = date_match.group(1).strip()
+                try:
+                    date_obj = datetime.strptime(date_str, "%d.%m. %Y").date()
+                    date_added = date_obj.isoformat()
+                except ValueError:
+                    date_added = None
 
-        for item in soup.select("article.sc-bdVaJa"):
-            title_tag = item.select_one("a.sc-1p2j45a-1")
-            title = title_tag["title"].strip() if title_tag and "title" in title_tag.attrs else "Bez názvu"
-            link = "https://aukro.cz" + title_tag["href"] if title_tag else ""
-            price_tag = item.select_one("div.sc-1n4y4tv-3")
-            price = price_tag.text.strip() if price_tag else "Neuvedeno"
-            location = "Aukro"
-            description = "Aukro inzerát – podrobnosti až na stránce"
+        ads.append({
+            "id": str(uuid.uuid4()),
+            "title": title,
+            "price": price,
+            "location": location,
+            "description": description,
+            "images": [image] if image else [],
+            "url": link,
+            "source": "bazos",
+            "date_added": date_added
+        })
 
-            img_tag = item.select_one("img")
-            image = img_tag["src"] if img_tag else ""
-
-            ads.append({
-                "id": str(uuid.uuid4()),
-                "title": title,
-                "price": price,
-                "location": location,
-                "description": description,
-                "images": [image] if image else [],
-                "url": link,
-                "source": "aukro"
-            })
-    except Exception as e:
-        print("❌ Aukro chyba:", e)
+    print(f"✅ Uloženo {len(ads)} inzerátů z Bazoš")
     return ads
 
 if __name__ == "__main__":
     Path("docs").mkdir(parents=True, exist_ok=True)
-
-    all_ads = scrap_bazos() + scrap_sbazar() + scrap_aukro()
-
+    ads = scrap_bazos()
     with open("docs/data.json", "w", encoding="utf-8") as f:
-        json.dump(all_ads, f, ensure_ascii=False, indent=2)
-
-    print(f"✅ Uloženo {len(all_ads)} inzerátů do docs/data.json")
+        json.dump(ads, f, ensure_ascii=False, indent=2)
