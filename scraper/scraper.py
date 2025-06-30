@@ -43,7 +43,7 @@ def scrap_bazos():
         for item in items:
             title_tag = item.select_one("h2.nadpis a")
             title = title_tag.text.strip() if title_tag else "Bez názvu"
-            link = "https://www.bazos.cz" + title_tag["href"] if title_tag else ""
+            link = "https://mobil.bazos.cz" + title_tag["href"] if title_tag else ""
 
             date_text = item.text
             date = parse_date_from_text(date_text)
