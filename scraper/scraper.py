@@ -40,14 +40,10 @@ def scrap_bazos():
         if not items:
             break
 
-        base_url = "mobil.bazos.cz"
-
         for item in items:
             title_tag = item.select_one("h2.nadpis a")
             title = title_tag.text.strip() if title_tag else "Bez názvu"
-
-            path = title_tag["href"] if title_tag and "href" in title_tag.attrs else ""
-            link = f"https://{base_url}{path}" if path else ""
+            link = "https://www.bazos.cz" + title_tag["href"] if title_tag else ""
 
             date_text = item.text
             date = parse_date_from_text(date_text)
@@ -64,15 +60,17 @@ def scrap_bazos():
             desc = desc_tag.text.strip() if desc_tag else "Bez popisu"
 
             img_tag = item.select_one("img")
-            image_path = img_tag["src"] if img_tag and "src" in img_tag.attrs else ""
-            if image_path.startswith("//"):
-                image = f"https:{image_path}"
-            elif image_path:
-                image = f"https://{base_url}/{image_path.lstrip('/')}"
-            else:
-                image = ""
+            image = ""
+            if img_tag and "src" in img_tag.attrs:
+                src = img_tag["src"]
+                if src.startswith("http"):
+                    image = src
+                elif src.startswith("//"):
+                    image = "https:" + src
+                elif src.startswith("/"):
+                    image = "https://www.bazos.cz" + src
 
-            ad_id = path.split("/")[-1].replace(".php", "") if path else str(uuid.uuid4())
+            ad_id = link.split("/")[-1].replace(".php", "") if link else str(uuid.uuid4())
 
             ads.append({
                 "id": ad_id,
