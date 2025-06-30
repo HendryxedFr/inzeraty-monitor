@@ -14,8 +14,8 @@ def scrap_bazos():
         r = requests.get(url, headers=headers, timeout=10)
         soup = BeautifulSoup(r.text, "html.parser")
 
-        for item in soup.select(".inzerat"):
-            title_tag = item.select_one(".nadpis a")
+        for item in soup.select("div.inzeratynadpis"):
+            title_tag = item.select_one("h2nadpis a")
             title = title_tag.text.strip() if title_tag else "Bez názvu"
             link = "https://bazos.cz" + title_tag["href"] if title_tag else ""
             price_tag = item.select_one(".cena")
