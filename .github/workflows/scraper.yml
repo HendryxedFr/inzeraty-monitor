@@ -2,7 +2,7 @@ name: Scraper
 
 on:
   schedule:
-    - cron: "*/5 * * * *"  # každých 5 minut
+    - cron: "*/5 * * * *"
   workflow_dispatch:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install requests beautifulsoup4
 
       - name: Run scraper
         run: python scraper/scraper.py
