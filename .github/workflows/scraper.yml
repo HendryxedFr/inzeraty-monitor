@@ -1,9 +1,9 @@
-name: Scrape and Update JSON
+name: Scraper
 
 on:
   schedule:
-    - cron: "*/5 * * * *" # každých 5 minut
-  workflow_dispatch:       # možnost ručního spuštění
+    - cron: "*/5 * * * *"  # každých 5 minut
+  workflow_dispatch:      # možnost spustit ručně
 
 jobs:
   scrape:
@@ -15,18 +15,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: pip install requests beautifulsoup4
+          python-version: "3.10"
 
       - name: Run scraper
         run: python scraper/scraper.py
 
-      - name: Commit and push
+      - name: Commit and push changes
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
           git add docs/data.json
-          git commit -m "Update data.json" || echo "No changes"
-          git push
+          git commit -m "Update data.json" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
