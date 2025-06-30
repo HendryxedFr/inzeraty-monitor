@@ -103,5 +103,5 @@ def scrap_aukro():
 
 if __name__ == "__main__":
     data = scrap_bazos() + scrap_sbazar() + scrap_aukro()
-    with open("data/data.json", "w", encoding="utf-8") as f:
+    with open("docs/data.json", "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=2)
